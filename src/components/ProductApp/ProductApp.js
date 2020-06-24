@@ -1,56 +1,63 @@
 import React from 'react';
-import ProductList from '../ProductList/ProductList';
+import ProductItem from '../ProductItem/ProductItem';
 
 class TodoApp extends React.Component {
   state = {
     products: [
       {
         id: 0,
-        image: 'https://mykolamak.github.io/layout_catalog/images/imac.jpeg',
-        name: 'Apple monoblock',
-        description: 'APPLE A1419 iMac 27" Retina 5K',
-        price: '1000'
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRMw1KTsk0IdX-hk9UGYtk6Wzosj9JFUDUG8wpueoOpsCJ_S8a5&usqp=CAU',
+        name: 'MTB Street 1',
+        description: 'NS Bikes Co.',
+        price: '1000',
+        isPined: false
       },
       {
         id: 1,
-        image: 'https://mykolamak.github.io/layout_catalog/images/imac.jpeg',
-        name: 'Apple monoblock',
-        description: 'APPLE A1419 iMac 27" Retina 5K',
-        price: '1000'
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRMw1KTsk0IdX-hk9UGYtk6Wzosj9JFUDUG8wpueoOpsCJ_S8a5&usqp=CAU',
+        name: 'MTB Street 2',
+        description: 'NS Bikes Co.',
+        price: '1000',
+        isPined: false
       },
       {
         id: 2,
-        image: 'https://mykolamak.github.io/layout_catalog/images/imac.jpeg',
-        name: 'Apple monoblock',
-        description: 'APPLE A1419 iMac 27" Retina 5K',
-        price: '1000'
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRMw1KTsk0IdX-hk9UGYtk6Wzosj9JFUDUG8wpueoOpsCJ_S8a5&usqp=CAU',
+        name: 'MTB Street 3',
+        description: 'NS Bikes Co.',
+        price: '1000',
+        isPined: false
       },
       {
         id: 3,
-        image: 'https://mykolamak.github.io/layout_catalog/images/imac.jpeg',
-        name: 'Apple monoblock',
-        description: 'APPLE A1419 iMac 27" Retina 5K',
-        price: '1000'
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRMw1KTsk0IdX-hk9UGYtk6Wzosj9JFUDUG8wpueoOpsCJ_S8a5&usqp=CAU',
+        name: 'MTB Street 4',
+        description: 'NS Bikes Co.',
+        price: '1000',
+        isPined: false
       },
       {
         id: 4,
-        image: 'https://mykolamak.github.io/layout_catalog/images/imac.jpeg',
-        name: 'Apple monoblock',
-        description: 'APPLE A1419 iMac 27" Retina 5K',
-        price: '1000'
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRMw1KTsk0IdX-hk9UGYtk6Wzosj9JFUDUG8wpueoOpsCJ_S8a5&usqp=CAU',
+        name: 'MTB Street 5',
+        description: 'NS Bikes Co.',
+        price: '1000',
+        isPined: false
       },
       {
         id: 5,
-        image: 'https://mykolamak.github.io/layout_catalog/images/imac.jpeg',
-        name: 'Apple monoblock',
-        description: 'APPLE A1419 iMac 27" Retina 5K',
-        price: '1000'
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRMw1KTsk0IdX-hk9UGYtk6Wzosj9JFUDUG8wpueoOpsCJ_S8a5&usqp=CAU',
+        name: 'MTB Street 6',
+        description: 'NS Bikes Co.',
+        price: '1000',
+        isPined: false
       },
     ],
     newProductImage: '',
     newProductName: '',
     newProductDescription: '',
     newProductPrice: '',
+    searchValue: ''
   }
 
   handleProductImage = (event) => {
@@ -77,11 +84,17 @@ class TodoApp extends React.Component {
     });
   }
 
+  handleSearchValue = (event) => {
+    this.setState({
+      searchValue: event.target.value
+    });
+  }
+
   handleFormSubmit = (event) => {
     event.preventDefault();
     const { newProductImage, newProductName, newProductDescription, newProductPrice } = this.state;
 
-    if (newProductImage.trim() === '' && newProductName.trim() === '' && newProductDescription.trim() === '' && newProductPrice.trim() === '') {
+    if ((newProductImage.trim() === '') || (newProductName.trim() === '') || (newProductDescription.trim() === '') || (newProductPrice.trim() === '')) {
       return;
     }
 
@@ -91,7 +104,8 @@ class TodoApp extends React.Component {
         image: prev.newProductImage,
         name: prev.newProductName,
         description: prev.newProductDescription,
-        price: prev.newProductPrice
+        price: prev.newProductPrice,
+        isPined: false
       };
 
       return {
@@ -110,52 +124,112 @@ class TodoApp extends React.Component {
     }));
   }
 
+  handlePin = (productId) => {
+    this.setState(prev => ({
+      products: prev.products.map((product) => {
+        if (product.id === productId) {
+          return {
+            ...product,
+            isPined: true,
+          }
+        }
+        return {
+          ...product,
+          isPined: false,
+        };
+      }),
+    }));
+  }
+
   render() {
-    const { products, newProductName, newProductImage, newProductDescription, newProductPrice } = this.state;
-    const { handleFormSubmit, handleProductImage, handleProductName, handleProductDescription, handleProductPrice} = this;
+    const {
+      products,
+      newProductName,
+      newProductImage,
+      newProductDescription,
+      newProductPrice,
+      searchValue
+    } = this.state;
+    const {
+      handleFormSubmit,
+      handleProductImage,
+      handleProductName,
+      handleProductDescription,
+      handleProductPrice,
+      handleSearchValue,
+      destroyItem,
+      handlePin
+    } = this;
+    const filteredProducts = products.filter(product => (product.name + product.description).includes(searchValue));
 
     return (
-      <section className="todoapp">
-        <header className="header">
-          <h1>Products</h1>
+      <section className="app">
+        <header className="app__header">
+          <h1 className="app__header-name">Products</h1>
 
-          <form onSubmit={handleFormSubmit}>
+          <form
+            onSubmit={handleFormSubmit}
+            className="app__header-form"
+          >
             <input
-                type="text"
-                placeholder="Type product Image URL"
-                value={newProductImage}
-                onChange={handleProductImage}
-              />
-              <input
-                type="text"
-                placeholder="Type product name"
-                value={newProductName}
-                onChange={handleProductName}
-              />
-              <input
-                type="text"
-                placeholder="Type product description"
-                value={newProductDescription}
-                onChange={handleProductDescription}
-              />
-              <input
-                type="text"
-                placeholder="Type product price"
-                value={newProductPrice}
-                onChange={handleProductPrice}
-              />
-              <button type="submit">
-              Add new Product
-              </button>
-            </form>
+              className="app__header-input"
+              type="text"
+              placeholder="Type product Image URL"
+              value={newProductImage}
+              onChange={handleProductImage}
+            />
+            <input
+              className="app__header-input"
+              type="text"
+              placeholder="Type product name"
+              value={newProductName}
+              onChange={handleProductName}
+            />
+            <input
+              className="app__header-input"
+              type="text"
+              placeholder="Type product description"
+              value={newProductDescription}
+              onChange={handleProductDescription}
+            />
+            <input
+              className="app__header-input"
+              type="text"
+              placeholder="Type product price"
+              value={newProductPrice}
+              onChange={handleProductPrice}
+            />
+            <button type="submit">
+            Add new Product
+            </button>
+          </form>
+          <input
+            className="app__header-input-search"
+            type="text"
+            placeholder="Type to search"
+            value={searchValue}
+            onChange={handleSearchValue}
+          />
         </header>
 
-        <section className="main products">
-          <ProductList
-            products={products}
-            destroyItem={this.destroyItem}
-          />
-        </section>
+        <main className="main__content">
+          <section className="products">
+            {filteredProducts.length === 0 ? <p>There are no products!</p> : ''}
+            {filteredProducts.map(product => (
+              <ProductItem
+                key={product.id}
+                id={product.id}
+                image={product.image}
+                name={product.name}
+                description={product.description}
+                price={product.price}
+                pined={product.isPined}
+                handlePin={handlePin}
+                destroyItem={destroyItem}
+              />
+            ))}
+          </section>
+        </main>
       </section>
     );
   }

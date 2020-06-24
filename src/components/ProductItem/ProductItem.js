@@ -1,34 +1,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const TodoItem = ({ id, name, image, description, price, destroyItem }) => (
-  <article class="products__card" data-qa="card">
+const TodoItem = ({ id, name, image, description, price, isPined, destroyItem, handlePin }) => (
+  <article
+    className={
+      isPined
+        ? "products__card-pined"
+        : "products__card"
+    }>
     <img
       src={image}
-      alt="iMac."
-      class="products__card-image"
+      alt={name}
+      className="products__card-image"
       width="160"
       height="134"
     />
-    <div class="products__card-description">
-      <h1 class="products__card-description-name">
+    <div className="products__card-description">
+      <h1 className="products__card-description-name">
         {description}
       </h1>
-      <p class="products__card-description-code">
+      <p className="products__card-description-code">
         {name}
       </p>
     </div>
-    <div class="products__card-description-price">
-      <p>Цена:</p>
-      <p class="products__card-description-price-sum">{price}</p>
+    <div className="products__card-description-price">
+      <p>Ціна:</p>
+      <p className="products__card-description-price-sum">{price}$</p>
     </div>
     <button
-        class="products__card-button-link"
         type="button"
-        className="destroy"
+        className="products__card-button button-destroy"
         onClick={() => destroyItem(id)}
     >
       Delete Product
+    </button>
+    <button
+      type="button"
+      className="products__card-button button-pin"
+      id={id}
+      onClick={() => handlePin(id)}
+      checked={isPined}
+    >
+      Pin Product
     </button>
   </article>
 );
@@ -42,4 +55,6 @@ TodoItem.propTypes = PropTypes.shape({
   description: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
   destroyItem: PropTypes.func.isRequired,
+  isPined: PropTypes.bool.isRequired,
+  handlePin: PropTypes.func.isRequired,
 }).isRequired;

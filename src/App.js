@@ -1,6 +1,6 @@
 import React from 'react';
 import ProductApp from './components/ProductApp/ProductApp'
-import './App.css';
+import './App.scss';
 
 function App() {
   return (
