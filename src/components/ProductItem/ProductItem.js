@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const TodoItem = ({ id, name, image, description, price, isPined, destroyItem, handlePin }) => (
+const ProductItem = ({ id, name, image, description, price, pined, destroyItem, handlePin }) => (
   <article
     className={
-      isPined
-        ? "products__card-pined"
+      pined
+        ? "products__card pined"
         : "products__card"
-    }>
+    }
+  >
     <img
       src={image}
       alt={name}
@@ -34,21 +35,27 @@ const TodoItem = ({ id, name, image, description, price, isPined, destroyItem, h
     >
       Delete Product
     </button>
-    <button
-      type="button"
-      className="products__card-button button-pin"
-      id={id}
-      onClick={() => handlePin(id)}
-      checked={isPined}
-    >
-      Pin Product
-    </button>
+    <div>
+      <button
+        type="checkbox"
+        className="products__card-button button-pin"
+        id={id}
+        onClick={() => handlePin(id)}
+        checked={pined}
+      />
+      <label
+        className="products__card-label_pin"
+        htmlFor={id}
+      >
+        Pin item
+      </label>
+    </div>
   </article>
 );
 
-export default TodoItem;
+export default ProductItem;
 
-TodoItem.propTypes = PropTypes.shape({
+ProductItem.propTypes = PropTypes.shape({
   id: PropTypes.number.isRequired,
   image: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,

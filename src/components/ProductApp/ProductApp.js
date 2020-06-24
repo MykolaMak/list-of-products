@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductItem from '../ProductItem/ProductItem';
 
-class TodoApp extends React.Component {
+class ProductApp extends React.Component {
   state = {
     products: [
       {
@@ -10,6 +10,7 @@ class TodoApp extends React.Component {
         name: 'MTB Street 1',
         description: 'NS Bikes Co.',
         price: '1000',
+        order: 0,
         isPined: false
       },
       {
@@ -18,6 +19,7 @@ class TodoApp extends React.Component {
         name: 'MTB Street 2',
         description: 'NS Bikes Co.',
         price: '1000',
+        order: 0,
         isPined: false
       },
       {
@@ -26,6 +28,7 @@ class TodoApp extends React.Component {
         name: 'MTB Street 3',
         description: 'NS Bikes Co.',
         price: '1000',
+        order: 0,
         isPined: false
       },
       {
@@ -34,6 +37,7 @@ class TodoApp extends React.Component {
         name: 'MTB Street 4',
         description: 'NS Bikes Co.',
         price: '1000',
+        order: 0,
         isPined: false
       },
       {
@@ -42,6 +46,7 @@ class TodoApp extends React.Component {
         name: 'MTB Street 5',
         description: 'NS Bikes Co.',
         price: '1000',
+        order: 0,
         isPined: false
       },
       {
@@ -50,6 +55,7 @@ class TodoApp extends React.Component {
         name: 'MTB Street 6',
         description: 'NS Bikes Co.',
         price: '1000',
+        order: 0,
         isPined: false
       },
     ],
@@ -57,7 +63,8 @@ class TodoApp extends React.Component {
     newProductName: '',
     newProductDescription: '',
     newProductPrice: '',
-    searchValue: ''
+    searchValue: '',
+    pinedId: ''
   }
 
   handleProductImage = (event) => {
@@ -105,6 +112,7 @@ class TodoApp extends React.Component {
         name: prev.newProductName,
         description: prev.newProductDescription,
         price: prev.newProductPrice,
+        order: 0,
         isPined: false
       };
 
@@ -125,17 +133,23 @@ class TodoApp extends React.Component {
   }
 
   handlePin = (productId) => {
+    if (this.state.pinedId === productId) {
+      return;
+    }
     this.setState(prev => ({
+      pinedId: productId,
       products: prev.products.map((product) => {
         if (product.id === productId) {
           return {
             ...product,
             isPined: true,
+            order: 1,
           }
         }
         return {
           ...product,
           isPined: false,
+          order: 0
         };
       }),
     }));
@@ -160,13 +174,12 @@ class TodoApp extends React.Component {
       destroyItem,
       handlePin
     } = this;
-    const filteredProducts = products.filter(product => (product.name + product.description).includes(searchValue));
+    const filteredProducts = products.filter(product => (product.name + product.description).includes(searchValue)).sort((a,b) => b.order - a.order);
 
     return (
       <section className="app">
         <header className="app__header">
-          <h1 className="app__header-name">Products</h1>
-
+          <h1 className="app__header-name">Products App</h1>
           <form
             onSubmit={handleFormSubmit}
             className="app__header-form"
@@ -235,4 +248,4 @@ class TodoApp extends React.Component {
   }
 }
 
-export default TodoApp;
+export default ProductApp;
